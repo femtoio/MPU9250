@@ -1,5 +1,6 @@
 /**
- * Invensense MPU9250 header.
+ * Invensense MPU9250 header. SPI timing operates between 400Hz and 1MHz. 
+ * Do not exceet 4V supply
  *
  * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -14,14 +15,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef MCP980X_H_INCLUDED
-#define MCP980X_H_INCLUDED
+#ifndef MPU9250_H_INCLUDED
+#define MPU9250_H_INCLUDED
+
+#include <compiler.h>
+#include <port.h>
+#include <spi.h>
+#include <delay.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+extern struct spi_module mpu9250_master;
+extern struct spi_slave_inst mpu9250_slave;
 
+uint32_t mpu9250_init(void);
 
 #ifdef __cplusplus
 }
