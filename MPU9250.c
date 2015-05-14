@@ -156,3 +156,13 @@ uint8_t mpu9250_gyro_offset_registers_z_get() {
   return 0; // @TODO Implement this.
 }
 void mpu9250_gyro_offset_registers_z_set(uint8_t value) {}
+
+uint8_t mpu9250_sample_rate_divider_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_sample_rate_divider_set(uint8_t value) {}
+
+uint8_t mpu9250_config_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_config_set(uint8_t value) {}
