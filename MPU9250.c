@@ -166,3 +166,48 @@ uint8_t mpu9250_config_get() {
   return 0; // @TODO Implement this.
 }
 void mpu9250_config_set(uint8_t value) {}
+
+uint8_t mpu9250_gyroscope_config_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_gyroscope_config_set(uint8_t value) {}
+
+uint8_t mpu9250_accelerometer_config_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_accelerometer_config_set(uint8_t value) {}
+
+uint8_t mpu9250_accelerometer_config2_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_accelerometer_config2_set(uint8_t value) {}
+
+uint8_t mpu9250_low_power_accelerometer_odr_control_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_low_power_accelerometer_odr_control_set(uint8_t value) {}
+
+uint8_t mpu9250_wake_on_motion_threshold_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_wake_on_motion_threshold_set(uint8_t value) {}
+
+uint8_t mpu9250_fifo_enable_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_fifo_enable_set(uint8_t value) {}
+
+uint8_t mpu9250_i2c_master_control_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_i2c_master_control_set(uint8_t value) {}
+
+uint8_t mpu9250_i2c_slave0_address_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_i2c_slave0_address_set(uint8_t value) {}
+
+uint8_t mpu9250_i2c_slave0_register_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_i2c_slave0_register_set(uint8_t value) {}
