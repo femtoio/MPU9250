@@ -211,3 +211,10 @@ uint8_t mpu9250_i2c_slave0_register_get() {
   return 0; // @TODO Implement this.
 }
 void mpu9250_i2c_slave0_register_set(uint8_t value) {}
+
+uint8_t mpu9250_i2c_slave0_control_get() {
+  return 0; // @TODO Implement this.
+}
+void mpu9250_i2c_slave0_control_set(uint8_t value) {}
+
+

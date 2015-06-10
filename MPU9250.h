@@ -1,5 +1,5 @@
 /**
- * Invensense MPU9250 header.
+ * Invensense MPU-9250, C header.
  *
  * THIS SOFTWARE IS PROVIDED BY FEMTO.IO "AS IS" AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -195,9 +195,11 @@ uint8_t mpu9250_gyro_offset_registers_z_get(void);
 void mpu9250_gyro_offset_registers_z_set(uint8_t value);
 
 /**
- * These registers are used to remove DC bias from the gyro sensor data output for X, Y and Z axes.
- * The values in these registers are subtracted from the gyro sensor values before going into the
- * sensor registers. Please refer to registers 67 to 72 for units.
+ * These registers are used to remove DC bias from the gyro sensor data output
+ * for X, Y and Z axes.
+ * The values in these registers are subtracted from the gyro sensor values
+ * before going into the sensor registers. Please refer to registers 67 to
+ * 72 for units.
  */
 /**
  * Register 25 - Sample Rate Divider
@@ -209,9 +211,10 @@ void mpu9250_gyro_offset_registers_z_set(uint8_t value);
  *
  * Divides the internal sample rate (see register CONFIG) to generate the
  * sample rate that controls sensor data output rate, FIFO sample rate.
- * NOTE: This register is only effective when Fchoice = 2’b11 (fchoice_b
- * register bits are 2’b00), and (0 < dlpf_cfg < 7), such that the average filter’s
- * output is selected (see chart below).
+ * NOTE: This register is only effective when Fchoice = 2'b11 (fchoice_b
+ * register bits are 2'b00), and (0 < dlpf_cfg < 7), such that the average
+ * filter's output is selected (see chart below).
+ *
  * This is the update rate of sensor register.
  * SAMPLE_RATE = Internal_Sample_Rate / (1 + SMPLRT_DIV)
  *
@@ -225,10 +228,10 @@ void mpu9250_sample_rate_divider_set(uint8_t value);
  * Register 26 - Configuration
  *
  * Bit [7] -            Reserved
- * Bit [6] FIFO_MODE    When set to ‘1’, when the fifo is full, additional
+ * Bit [6] FIFO_MODE    When set to '1', when the fifo is full, additional
  *                      writes will not be written to fifo.
  *
- *                      When set to ‘0’, when the fifo is full, additional
+ *                      When set to '0', when the fifo is full, additional
  *                      writes will be written to the fifo, replacing the
  *                      oldest data.
  *
@@ -245,16 +248,15 @@ void mpu9250_sample_rate_divider_set(uint8_t value);
  *                                    6           |    ACCEL_YOUT_L[0]
  *                                    7           |    ACCEL_ZOUT_L[0]
  *
- * Fsync will be latched to capture short strobes. This will be done such that if
- * Fsync toggles, the latched value toggles, but won’t toggle again until the new
- * latched value is captured by the sample rate strobe. This is a requirement for
- * working with some 3 party devices that have fsync strobes shorter than our
- * sample rate.
- *
+ * Fsync will be latched to capture short strobes. This will be done such that
+ * if Fsync toggles, the latched value toggles, but won't toggle again until
+ * the new latched value is captured by the sample rate strobe. This is a
+ * requirement for working with some 3 party devices that have fsync strobes
+ * shorter than our sample rate.
  *
  *
  * Bit [2:0] DLPF_CFG[2:0]  For the DLPF to be used, fchoice[1:0] must be set
- * to 2’b11, fchoice_b[1:0] is 2’b00.
+ * to 2'b11, fchoice_b[1:0] is 2'b00.
  *
  * FCHOICE  |  DLFP_CFG  |              Gyroscope           | Temperature Sensor
  * -----------------------------------------------------------------------------
@@ -372,10 +374,10 @@ void mpu9250_accelerometer_config_set(uint8_t value);
  *   1            |  7          |  460      |  1.94  |  250       |  1
  *
  * The data output rate of the DLPF filter block can be further reduced by a
- * factor of 1/(1+SMPLRT_DIV), where SMPLRT_DIV is an 8-bit integer. The following
- * is a small subset of ODRs that are configurable for the accelerometer in the
- * normal mode in this manner (Hz): 3.91, 7.81, 15.63, 31.25, 62.50, 125, 250,
- * 500, 1K
+ * factor of 1/(1+SMPLRT_DIV), where SMPLRT_DIV is an 8-bit integer. The
+ * following is a small subset of ODRs that are configurable for the
+ * accelerometer in the normal mode in this manner
+ * (Hz): 3.91, 7.81, 15.63, 31.25, 62.50, 125, 250, 500, 1K
  *
  * The following table lists the approximate accelerometer filter bandwidths
  * available in the low-power mode of operation. In the low-power mode of
@@ -549,7 +551,7 @@ void mpu9250_fifo_enable_set(uint8_t value);
  *
  *                           0 - function is disabled
  *
- * Bit [4]    I2C_MST_P_NSR  This bit controls the I2C Master’s transition from
+ * Bit [4]    I2C_MST_P_NSR  This bit controls the I2C Master's transition from
  *                           one slave read to the next slave read. If 0, there
  *                           is a restart between reads. If 1, there is a stop
  *                           between reads.
@@ -617,14 +619,753 @@ void mpu9250_i2c_slave0_register_set(uint8_t value);
  * Serial IF: R/W
  * Reset Value: 0x00
  *
- * Bit [7:0]       I2C_SLV0_EN        1 - Enable reading data from this slave at
+ * Bit [7]        I2C_SLV0_EN         1 - Enable reading data from this slave at
  *                                    the sample rate and storing data at the
  *                                    first available EXT_SENS_DATA register,
  *                                    which is always EXT_SENS_DATA_00 for I2C
  *                                    slave 0.
  *
  *                                    0 - function is disabled for this slave
+ *
+ * Bit [6]        I2C_SLV0_BYTE_SW    1 - Swap bytes when reading both the low
+ *                                    and high byte of a word. Note there is
+ *                                    nothing to swap after reading the first
+ *                                    byte if I2C_SLV0_REG[0] = 1, or if the
+ *                                    last byte read has a register address
+ *                                    lsb = 0.
+ *
+ *                                    For example, if I2C_SLV0_REG = 0x1, and
+ *                                    I2C_SLV0_LENG = 0x4:
+ *
+ *                                       1) The first byte read from address 0x1
+ *                                          will be stored at EXT_SENS_DATA_00,
+ *
+ *                                       2) the second and third bytes will be
+ *                                          read and swapped, so the data read
+ *                                          from address 0x2 will be stored at
+ *                                          EXT_SENS_DATA_02, and the data read
+ *                                          from address 0x3 will be stored at
+ *                                          EXT_SENS_DATA_01,
+ *
+ *                                       3) The last byte read from address 0x4
+ *                                       will be stored at EXT_SENS_DATA_03
+ *
+ *                                    0 - no swapping occurs, bytes are written
+ *                                    in order read.
+ *
+ * Bit [5]        I2C_SLV0_REG_DIS    When set, the transaction does not write
+ *                                    a register value, it will only read data,
+ *                                    or write data
+ *
+ * Bit [4]        I2C_SLV0_GRP        External sensor data typically comes in
+ *                                    as groups of two bytes. This bit is used
+ *                                    to determine if the groups are from the
+ *                                    slave's register address 0 and 1, 2 and
+ *                                    3, etc.., or if the groups are address 1
+ *                                    and 2, 3 and 4, etc..
+ *
+ *                                    0 indicates slave register addresses 0
+ *                                    and 1 are grouped together (odd numbered
+ *                                    register ends the group). 1 indicates
+ *                                    slave register addresses 1 and 2 are
+ *                                    grouped together (even numbered register
+ *                                    ends the group). This allows byte
+ *                                    swapping of registers that are grouped
+ *                                    starting at any address.
+ *
+ * Bit [3:0]      I2C_SLV0_LENG[3:0]  Number of bytes to be read from I2C
+ *                                    slave 0
  */
+uint8_t mpu9250_i2c_slave0_control_get(void);
+void mpu9250_i2c_slave0_control_set(uint8_t value);
+
+/**
+ * Register 40 - I2C_SLV1_ADDR
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV1_RNW          1 - Transfer is a read
+ *                                    2 - Transfer is a write
+ *
+ * Bit [6:0]    I2C_ID_1[6:0]         Physical address of I2C slave 1
+ */
+uint8_t mpu9250_i2c_slave1_address_get(void);
+void mpu9250_i2c_slave1_address_set(uint8_t value);
+
+/**
+ * Register 41 - I2C_SLV1_REG
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]    I2C_SLV1_REG[7:0]     I2C slave 1 register address from where
+ *                                    to begin data transfer
+ *
+ */
+uint8_t mpu9250_i2c_slave1_register_get(void);
+void mpu9250_i2c_slave1_register_set(uint8_t value);
+
+/**
+ * Register 42 - I2C_SLV1_CTRL
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV1_EN           1 - Enable reading data from this slave
+ *                                    at the sample rate and storing data at
+ *                                    the first available EXT_SENS_DATA
+ *                                    register as determined by I2C_SLV1_EN and
+ *                                    I2C_SLV1_LENG.
+ *
+ *                                    0 - Function is disabled for this slave
+ *
+ * Bit [6]      I2C_SLV1_BYTE_SW      1 - Swap bytes when reading both the low
+ *                                    and high byte of a word. Note there is
+ *                                    nothing to swap after reading the first
+ *                                    byte if I2C_SLV1_REG[0] = 1, or if the
+ *                                    last byte read has a register address
+ *                                    lsb = 0.
+ *
+ *                                    For example, if I2C_SLV1_EN = 0x1, and
+ *                                    I2C_SLV1_LENG = 0x3 (to show swap has to
+ *                                    do with I2C slave address not
+ *                                    EXT_SENS_DATA address), and if
+ *                                    I2C_SLV1_REG = 0x1, and
+ *                                    I2C_SLV1_LENG = 0x4:
+ *
+ *                                      1) The first byte read from address 0x1
+ *                                      will be stored at EXT_SENS_DATA_03
+ *                                      (slave 0's data will be in
+ *                                      EXT_SENS_DATA_00, EXT_SENS_DATA_01, and
+ *                                      EXT_SENS_DATA_02),
+ *
+ *                                      2) the second and third bytes will be
+ *                                      read and swapped, so the data read from
+ *                                      address 0x2 will be stored at
+ *                                      EXT_SENS_DATA_04, and the data read from
+ *                                      address 0x3 will be stored at
+ *                                      EXT_SENS_DATA_05,
+ *
+ *                                      3) The last byte read from address 0x4
+ *                                      will be stored at EXT_SENS_DATA_06
+ *
+ *                                    0 - no swapping occurs, bytes are written
+ *                                    in order read.
+ *
+ * Bit [5]      I2C_SLV1_REG_DIS      When set, the transaction does not write
+ *                                    a register value, it will only read data,
+ *                                    or write data
+ *
+ * Bit [4]      I2C_SLV1_GRP          External sensor data typically comes in
+ *                                    as groups of two bytes. This bit is used
+ *                                    to determine if the groups are from the
+ *                                    slave's register address 0 and 1, 2 and
+ *                                    3, etc.., or if the groups are address 1
+ *                                    and 2, 3 and 4, etc.. 0 indicates slave
+ *                                    register addresses 0 and 1 are grouped
+ *                                    together (odd numbered register ends the
+ *                                    group). 1 indicates slave register
+ *                                    addresses 1 and 2 are grouped together
+ *                                    (even numbered register ends the group).
+ *                                    This allows byte swapping of registers
+ *                                    that are grouped starting at any address.
+ *
+ * Bit [3:0]    I2C_SLV1_LENG[3:0]    Number of bytes to be read from I2C
+ *                                    slave 1
+ */
+uint8_t mpu9250_i2c_slave1_control_get(void);
+void mpu9250_i2c_slave1_control_set(uint8_t value);
+
+/**
+ * Registers 43 to 45 - I2C Slave 2 Control
+ */
+/**
+ * Register 43 - I2C_SLV2_ADDR
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV2_RNW          1 - Transfer is a read
+ *                                    2 - Transfer is a write
+ *
+ * Bit [6:0]    I2C_ID_2[6:0]         Physical address of I2C slave 2
+ */
+uint8_t mpu9250_i2c_slave2_address_get(void);
+void mpu9250_i2c_slave2_address_set(uint8_t value);
+
+/**
+ * Register 44 - I2C_SLV2_REG
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]    I2C_SLV2_REG[7:0]     I2C slave 2 register address from where
+ *                                    to begin data transfer
+ */
+uint8_t mpu9250_i2c_slave2_register_get(void);
+void mpu9250_i2c_slave2_register_set(uint8_t value);
+
+/**
+ * Register 45 - I2C_SLV2_CTRL
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV2_EN           1 - Enable reading data from this slave
+ *                                    at the sample rate and storing data at
+ *                                    the first available EXT_SENS_DATA
+ *                                    register as determined by I2C_SLV0_EN,
+ *                                    I2C_SLV0_LENG, I2C_SLV1_EN and
+ *                                    I2C_SLV1_LENG.
+ *
+ *                                    0 - function is disabled for this slave
+ *
+ * Bit [6]      I2C_SLV2_BYTE_SW      1 - Swap bytes when reading both the low
+ *                                    and high byte of a word. Note there is
+ *                                    nothing to swap after reading the first
+ *                                    byte if I2C_SLV2_REG[0] = 1, or if the
+ *                                    last byte read has a register address
+ *                                    lsb = 0. See I2C_SLV1_CTRL for an example.
+ *
+ *                                    0 - no swapping occurs, bytes are written
+ *                                    in order read.
+ *
+ * Bit [5]      I2C_SLV2_REG_DIS      When set, the transaction does not write
+ *                                    a register value, it will only read data,
+ *                                    or write data
+ *
+ * Bit [4]      I2C_SLV2_GRP          External sensor data typically comes in
+ *                                    as groups of two bytes. This bit is used
+ *                                    to determine if the groups are from the
+ *                                    slave's register address 0 and 1, 2 and
+ *                                    3, etc.., or if the groups are address 1
+ *                                    and 2, 3 and 4, etc..
+ *
+ * Bit [3:0]    I2C_SLV2_LENG[3:0]    Number of bytes to be read from I2C
+ *                                    slave 2
+ */
+uint8_t mpu9250_i2c_slave2_control_get(void);
+void mpu9250_i2c_slave2_control_set(uint8_t value);
+
+/**
+ * Register 46 - I2C_SLV3_ADDR
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV3_RNW          1 - Transfer is a read.
+ *                                    0 - Transfer is a write.
+ *
+ * Bit [6:0]    I2C_ID_3[6:0]         Physical address of I2C slave 3
+ */
+uint8_t mpu9250_i2c_slave3_address_get(void);
+void mpu9250_i2c_slave3_address_set(uint8_t value);
+
+/**
+ * Register 47 - I2C_SLV3_REG
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]    I2C_SLV3_REG[7:0]     I2C slave 3 register address from where
+ *                                    to begin data transfer
+ */
+uint8_t mpu9250_i2c_slave3_register_get(void);
+void mpu9250_i2c_slave3_register_set(uint8_t value);
+
+/**
+ * Register 48 - I2C_SLV3_CTRL
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV3_EN            1 - Enable reading data from this slave
+ *                                     at the sample rate and storing data at
+ *                                     the first available EXT_SENS_DATA
+ *                                     register as determined by I2C_SLV0_EN,
+ *                                     I2C_SLV0_LENG, I2C_SLV1_EN,
+ *                                     I2C_SLV1_LENG, I2C_SLV2_EN and
+ *                                     I2C_SLV2_LENG.
+ *
+ *                                     0 - function is disabled for this slave
+ *
+ * Bit [6]      I2C_SLV3_BYTE_SW       1 - Swap bytes when reading both the low
+ *                                     and high byte of a word. Note there is
+ *                                     nothing to swap after reading the first
+ *                                     byte if I2C_SLV3_REG[0] = 1, or if the
+ *                                     last byte read has a register address
+ *                                     lsb = 0. See I2C_SLV1_CTRL for an
+ *                                     example.
+ *
+ *                                     0 - no swapping occurs, bytes are
+ *                                     written in order read.
+ *
+ * Bit [5]      I2C_SLV0_REG_DIS       When set, the transaction does not write
+ *                                     a register value, it will only read
+ *                                     data, or write data
+ *
+ * Bit [4]      I2C_SLV3_GRP           External sensor data typically comes in
+ *                                     as groups of two bytes. This bit is used
+ *                                     to determine if the groups are from the
+ *                                     slave's register address 0 and 1, 2 and
+ *                                     3, etc.., or if the groups are address
+ *                                     1 and 2, 3 and 4, etc..
+ *
+ *                                     0 indicates slave register addresses 0
+ *                                     and 1 are grouped together (odd numbered
+ *                                     register ends the group). 1 indicates
+ *                                     slave register addresses 1 and 2 are
+ *                                     grouped together (even numbered register
+ *                                     ends the group). This allows byte
+ *                                     swapping of registers that are grouped
+ *                                     starting at any address.
+ *
+ * Bit [3:0]    I2C_SLV3_LENG[3:0]     Number of bytes to be read from I2C
+ *                                     slave 3
+ */
+uint8_t mpu9250_i2c_slave3_control_get(void);
+void mpu9250_i2c_slave3_control_set(uint8_t value);
+
+/**
+ * Register 49 - I2C_SLV4_ADDR
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV4_RNW           1 - Transfer is a read
+ *                                     0 - Transfer is a write
+ *
+ * Bit [6:0]    I2C_ID_4[6:0]          Physical address of I2C slave 4
+ */
+uint8_t mpu9250_i2c_slave4_address_get(void);
+void mpu9250_i2c_slave4_address_set(uint8_t value);
+
+/**
+ * Register 50 - I2C_SLV4_REG
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]    I2C_SLV4_REG[7:0]      I2C slave 4 register address from where
+ *                                     to begin data transfer
+ */
+uint8_t mpu9250_i2c_slave4_register_get(void);
+void mpu9250_i2c_slave4_register_set(uint8_t value);
+
+/**
+ * Register 51 - I2C_SLV4_DO
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]    I2C_SLV4_DO[7:0]       Data to be written to I2C Slave 4 if
+ *                                     enabled.
+ */
+uint8_t mpu9250_i2c_slave4_data_get(void);
+void mpu9250_i2c_slave4_data_set(uint8_t value);
+
+/**
+ * Register 52 - I2C_SLV4_CTRL
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      I2C_SLV4_EN            1 - Enable data transfer with this slave
+ *                                     at the sample rate. If read command,
+ *                                     store data in I2C_SLV4_DI register, if
+ *                                     write command, write data stored in
+ *                                     I2C_SLV4_DO register. Bit is cleared
+ *                                     when a single transfer is complete.
+ *                                     Be sure to write I2C_SLV4_DO first
+ *
+ *                                     0 - function is disabled for this slave
+ *
+ * Bit [6]      SLV4_DONE_INT_EN       1 - Enables the completion of the I2C
+ *                                     slave 4 data transfer to cause an
+ *                                     interrupt.
+ *
+ *                                     0 - Completion of the I2C slave 4 data
+ *                                     transfer will not cause an interrupt.
+ *
+ * Bit [5]      I2C_SLV4_REG_DIS       When set, the transaction does not write
+ *                                     a register value, it will only read
+ *                                     data, or write data
+ *
+ * Bit [4:0]    I2C_MST_DLY            When enabled via the I2C_MST_DELAY_CTRL,
+ *                                     those slaves will only be enabled every
+ *                                     (1+I2C_MST_DLY) samples (as determined
+ *                                     by the SMPLRT_DIV and DLPF_CFG registers.
+ */
+uint8_t mpu9250_i2c_slave4_control_get(void);
+void mpu9250_i2c_slave4_control_set(uint8_t value);
+
+/**
+ * Register 53 - I2C_SLV4_DI
+ * Serial IF: R
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]    I2C_SLV4_DI[7:0]       Data read from I2C Slave 4.
+ */
+uint8_t mpu9250_i2c_slave4_data_get(void);
+// No setter for I2C_SLV4_DI (Read-only)
+// void mpu9250_i2c_slave4_data_set(uint8_t value);
+
+/**
+ * 4.18
+ */
+/**
+ * Register 54 - I2C Master Status (I2C_MST_STATUS)
+ * Serial IF: R/C (Read)
+ * Reset Value: 0x00
+ *
+ * Bit [7]      PASS_THROUGH           Status of FSYNC interrupt – used as a
+ *                                     way to pass an external interrupt
+ *                                     through this chip to the host. If
+ *                                     enabled in the INT_PIN_CFG register by
+ *                                     asserting bit FSYNC_INT_EN and if the
+ *                                     FSYNC signal transitions from low to
+ *                                     high, this will cause an interrupt. A
+ *                                     read of this register clears all status
+ *                                     bits in this register.
+ *
+ * Bit [6]      I2C_SLV4_DONE          Asserted when I2C slave 4's transfer is
+ *                                     complete, will cause an interrupt if bit
+ *                                     I2C_MST_INT_EN in the INT_ENABLE
+ *                                     register is asserted, and if the
+ *                                     SLV4_DONE_INT_EN bit is asserted in the
+ *                                     I2C_SLV4_CTRL register.
+ *
+ * Bit [5]      I2C_LOST_ARB           Asserted when I2C slave looses
+ *                                     arbitration of the I2C bus, will cause
+ *                                     an interrupt if bit I2C_MST_INT_EN in
+ *                                     the INT_ENABLE register is asserted.
+ *
+ * Bit [4]      I2C_SLV4_NACK          Asserted when slave 4 receives a nack,
+ *                                     will cause an interrupt if bit
+ *                                     I2C_MST_INT_EN in the INT_ENABLE
+ *                                     register is asserted.
+ *
+ * Bit [3]      I2C_SLV3_NACK          Asserted when slave 3 receives a nack,
+ *                                     will cause an interrupt if bit
+ *                                     I2C_MST_INT_EN in the INT_ENABLE
+ *                                     register is asserted.
+ *
+ * Bit [2]      I2C_SLV2_NACK          Asserted when slave 2 receives a nack,
+ *                                     will cause an interrupt if bit
+ *                                     I2C_MST_INT_EN in the INT_ENABLE
+ *                                     register is asserted.
+ *
+ * Bit [1]      I2C_SLV1_NACK          Asserted when slave 1 receives a nack,
+ *                                     will cause an interrupt if bit
+ *                                     I2C_MST_INT_EN in the INT_ENABLE
+ *                                     register is asserted.
+ *
+ * Bit [0]      I2C_SLV0_NACK          Asserted when slave 0 receives a nack,
+ *                                     will cause an interrupt if bit
+ *                                     I2C_MST_INT_EN in the INT_ENABLE
+ *                                     register is asserted.
+ */
+uint8_t mpu9250_i2c_master_status_get(void);
+// No setter for I2C_MST_STATUS (Read-only)
+// void mpu9250_i2c_master_status_set(uint8_t value);
+
+/**
+ * Register 55 - INT Pin / Bypass Enable Configuration (INT_PIN_CFG)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]      ACTL                   1 - The logic level for INT pin is
+ *                                     active low.
+ *
+ *                                     0 - The logic level for INT pin is
+ *                                     active high.
+ *
+ *
+ *
+ * Bit [6]      OPEN                   1 - INT pin is configured as open drain.
+ *                                     0 - INT pin is configured as push-pull.
+ *
+ *
+ *
+ * Bit [5]      LATCH_INT_EN           1 - INT pin level held until interrupt
+ *                                     status is cleared.
+ *
+ *                                     0 - INT pin indicates interrupt pulse's
+ *                                     is width 50us.
+ *
+ *
+ *
+ * Bit [4]      INT_ANYRD_2CLEAR       1 - Interrupt status is cleared if any
+ *                                     read operation is performed.
+ *
+ *                                     0 - Interrupt status is cleared only by
+ *                                     reading INT_STATUS register
+ *
+ *
+ *
+ * Bit [3]      ACTL_FSYNC             1 - The logic level for the FSYNC pin as
+ *                                     an interrupt is active low.
+ *
+ *                                     0 - The logic level for the FSYNC pin as
+ *                                     an interrupt is active high.
+ *
+ *
+ *
+ * Bit [2]      FSYNC_INT_MODE_EN      1 - This enables the FSYNC pin to be
+ *                                     used as an interrupt. A transition to
+ *                                     the active level described by the
+ *                                     ACTL_FSYNC bit will cause an interrupt.
+ *                                     The status of the interrupt is read in
+ *                                     the I2C Master Status register
+ *                                     PASS_THROUGH bit.
+ *
+ *                                     0 - This disables the FSYNC pin from
+ *                                     causing an interrupt.
+ *
+ *
+ *
+ * Bit [1]      BYPASS_EN              When asserted, the i2c_master interface
+ *                                     pins(ES_CL and ES_DA) will go into
+ *                                     'bypass mode' when the i2c master
+ *                                     interface is disabled. The pins will
+ *                                     float high due to the internal pull-up
+ *                                     if not enabled and the i2c master
+ *                                     interface is disabled.
+ *
+ *
+ * Bit [0]     RESERVED
+ */
+uint8_t mpu9250_i2c_int_pin_config_get(void);
+void mpu9250_i2c_int_pin_config_set(uint8_t value);
+
+
+/**
+ * Register 56 - Interrupt Enable (INT_ENABLE)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]     RESERVED
+ *
+ * Bit [6]     WOM_EN                  1 - Enable interrupt for wake on motion
+ *                                     to propagate to interrupt pin.
+ *
+ *                                     0 - function is disabled.
+ *
+ *
+ *
+ *
+ * Bit [5]     RESERVED
+ *
+ * Bit [4]     FIFO_OVERFLOW_EN        1 - Enable interrupt for FIFO overflow
+ *                                     to propagate to interrupt pin.
+ *
+ *                                     0 - function is disabled.
+ *
+ *
+ *
+ * Bit [3]     FSYNC_INT_EN            1 - Enable Fsync interrupt to propagate
+ *                                     to interrupt pin.
+ *
+ *                                     0 - function is disabled.
+ *
+ *
+ * Bit [2]     RESERVED
+ *
+ * Bit [1]     RESERVED
+ *
+ * Bit [0]     RAW_RDY_EN              1 - Enable Raw Sensor Data Ready
+ *                                     interrupt to propagate to interrupt pin.
+ *                                     The timing of the interrupt can vary
+ *                                     depending on the setting in register 36
+ *                                     I2C_MST_CTRL, bit [6] WAIT_FOR_ES.
+ *
+ *                                     0 - function is disabled.
+ */
+uint8_t mpu9250_i2c_interrupt_enable_get(void);
+void mpu9250_i2c_interrupt_enable_set(uint8_t value);
+
+/**
+ * Register 58 - Interrupt Status (INT_STATUS)
+ * Serial IF: R/C  (Read-Only)
+ * Reset Value: 0x00
+ *
+ * Bit [7]     RESERVED
+ *
+ * Bit [6]     WOM_INT                 1 - Wake on motion interrupt occurred.
+ *
+ * Bit [5]     RESERVED
+ *
+ * Bit [4]     FIFO_OVERFLOW_INT       1 - FIFO Overflow interrupt occurred.
+ *                                     Note that the oldest data is has been
+ *                                     dropped from the FIFO.
+ *
+ * Bit [3]     FSYNC_INT               1 - FSYNC interrupt occurred.
+ *
+ * Bit [2]     RESERVED
+ *
+ * Bit [1]     RESERVED
+ *
+ * Bit [0]     RAW_DATA_RDY_INT        1 - Sensor Register Raw Data sensors are
+ *                                     updated and Ready to be read. The timing
+ *                                     of the interrupt can vary depending on
+ *                                     the setting in register 36 I2C_MST_CTRL,
+ *                                     bit [6] WAIT_FOR_ES.
+ */
+uint8_t mpu9250_i2c_interrupt_status_get(void);
+// No setter for INT_STATUS (Read-only)
+// void mpu9250_i2c_interrupt_status_set(uint8_t value);
+
+/**
+ * Register 59 to 64 - Accelerometer Measurements
+ */
+/**
+ * Register 59 - ACCEL_XOUT_H
+ * Serial IF: SyncR (Read-only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of accelerometer x-axis data.
+ */
+uint8_t mpu9250_i2c_accel_xout_h(void);
+
+/**
+ * Register 60 - ACCEL_XOUT_L
+ * Serial IF: SyncR (Read-only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of accelerometer x-axis data.
+ */
+uint8_t mpu9250_i2c_accel_xout_l(void);
+
+/**
+ * Register 61 - ACCEL_YOUT_H
+ * Serial IF: SyncR (Read-only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of accelerometer y-axis data.
+ */
+uint8_t mpu9250_i2c_accel_yout_h(void);
+
+/**
+ * Register 62 - ACCEL_YOUT_L
+ * Serial IF: SyncR (Read-only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of accelerometer y-axis data.
+ */
+uint8_t mpu9250_i2c_accel_yout_l(void);
+
+/**
+ * Register 63 - ACCEL_ZOUT_H
+ * Serial IF: SyncR (Read-only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of accelerometer z-axis data.
+ */
+uint8_t mpu9250_i2c_accel_zout_h(void);
+
+/**
+ * Register 64 - ACCEL_ZOUT_L
+ * Serial IF: SyncR (Read-only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of accelerometer z-axis data.
+ */
+uint8_t mpu9250_i2c_accel_zout_l(void);
+
+/**
+ * Register 65 and 66 - Temperature Measurement
+ */
+/**
+ * Register 65 - TEMP_OUT_H
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of the temperature sensor
+ *                                     output
+ */
+uint8_t mpu9250_i2c_temp_out_h(void);
+/**
+ * Register 66 - TEMP_OUT_L
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of the temperature sensor
+ *                                     output:
+ *
+ *                                     -----------------------------------------
+ *                                     | TEMP_degC =                           |
+ *                                     | ((TEMP_OUT - RoomTemp_OFFSET) /       |
+ *                                     | Temp_Sensitivity) + 21degC            |
+ *                                     -----------------------------------------
+ *                                     Where Temp_degC is the temperature in
+ *                                     degrees C measured by the temperature
+ *                                     sensor. TEMP_OUT is the actual output of
+ *                                     the temperature sensor.
+ */
+uint8_t mpu9250_i2c_temp_out_l(void);
+
+/**
+ * Register 67 to 72 - Gyroscope Measurements
+ */
+/**
+ * Register 67 - GYRO_XOUT_H
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of the X-Axis gyroscope output
+ */
+uint8_t mpu9250_i2c_gyro_xout_h(void);
+/**
+ * Register 68 - GYRO_XOUT_L
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of the X-Axis gyroscope output
+ *
+ *                                     GYRO_XOUT = Gyro_Sensitivity *
+ *                                                 X_angular_rate
+ *
+ *                                     Nominal     FS_SEL = 0
+ *                                     Conditions  Gyro_Sensitivity = 131 LSB/
+ *                                                                        (o/s)
+ */
+uint8_t mpu9250_i2c_gyro_xout_l(void);
+
+/**
+ * Register 69 - GYRO_YOUT_H
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of the Y-Axis gyroscope output
+ */
+uint8_t mpu9250_i2c_gyro_yout_h(void);
+/**
+ * Register 70 - GYRO_YOUT_L
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of the Y-Axis gyroscope output
+ *
+ *                                     GYRO_YOUT = Gyro_Sensitivity *
+ *                                                 Y_angular_rate
+ *
+ *                                     Nominal     FS_SEL = 0
+ *                                     Conditions  Gyro_Sensitivity = 131 LSB/
+ *                                                                        (o/s)
+ */
+uint8_t mpu9250_i2c_gyro_yout_l(void);
+
+/**
+ * Register 71 - GYRO_ZOUT_H
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  High byte of the Z-Axis gyroscope output
+ */
+uint8_t mpu9250_i2c_gyro_zout_h(void);
+/**
+ * Register 72 - GYRO_ZOUT_L
+ * Serial IF: SyncR (Read-Only)
+ * Reset Value: 0x00 (If sensor disabled)
+ *
+ * Bit [7:0]   D[7:0]                  Low byte of the Z-Axis gyroscope output
+ *
+ *                                     GYRO_ZOUT = Gyro_Sensitivity *
+ *                                                 Z_angular_rate
+ *
+ *                                     Nominal     FS_SEL = 0
+ *                                     Conditions  Gyro_Sensitivity = 131 LSB/
+ *                                                                        (o/s)
+ */
+uint8_t mpu9250_i2c_gyro_zout_l(void);
 
 
 #ifdef __cplusplus
