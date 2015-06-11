@@ -584,8 +584,8 @@ void mpu9250_fifo_enable_set(uint8_t value);
  * Note: For further information regarding the association of EXT_SENS_DATA
  * registers to particular slave devices, please refer to Registers 73 to 96
  */
-uint8_t mpu9250_i2c_master_control_get(void);
-void mpu9250_i2c_master_control_set(uint8_t value);
+uint8_t mpu9250_master_control_get(void);
+void mpu9250_master_control_set(uint8_t value);
 
 /**
  * 4.13    Register 37 to 39 - I2C Slave 0 Control (Page 20)
@@ -600,8 +600,8 @@ void mpu9250_i2c_master_control_set(uint8_t value);
  *
  * Bit [6:0]      I2C_ID_0[6:0]       Physical address of I2C slave 0
  */
-uint8_t mpu9250_i2c_slave0_address_get(void);
-void mpu9250_i2c_slave0_address_set(uint8_t value);
+uint8_t mpu9250_slave0_address_get(void);
+void mpu9250_slave0_address_set(uint8_t value);
 
 /**
  * Register 38 - I2C_SLV0_REG
@@ -611,8 +611,8 @@ void mpu9250_i2c_slave0_address_set(uint8_t value);
  * Bit [7:0]      I2C_SLV0_REG[7:0]    I2C slave 0 register address from where
  *                                     to begin data transfer
  */
-uint8_t mpu9250_i2c_slave0_register_get(void);
-void mpu9250_i2c_slave0_register_set(uint8_t value);
+uint8_t mpu9250_slave0_register_get(void);
+void mpu9250_slave0_register_set(uint8_t value);
 
 /**
  * Register 39 - I2C_SLV0_CTRL
@@ -676,8 +676,8 @@ void mpu9250_i2c_slave0_register_set(uint8_t value);
  * Bit [3:0]      I2C_SLV0_LENG[3:0]  Number of bytes to be read from I2C
  *                                    slave 0
  */
-uint8_t mpu9250_i2c_slave0_control_get(void);
-void mpu9250_i2c_slave0_control_set(uint8_t value);
+uint8_t mpu9250_slave0_control_get(void);
+void mpu9250_slave0_control_set(uint8_t value);
 
 /**
  * Register 40 - I2C_SLV1_ADDR
@@ -689,8 +689,8 @@ void mpu9250_i2c_slave0_control_set(uint8_t value);
  *
  * Bit [6:0]    I2C_ID_1[6:0]         Physical address of I2C slave 1
  */
-uint8_t mpu9250_i2c_slave1_address_get(void);
-void mpu9250_i2c_slave1_address_set(uint8_t value);
+uint8_t mpu9250_slave1_address_get(void);
+void mpu9250_slave1_address_set(uint8_t value);
 
 /**
  * Register 41 - I2C_SLV1_REG
@@ -701,8 +701,8 @@ void mpu9250_i2c_slave1_address_set(uint8_t value);
  *                                    to begin data transfer
  *
  */
-uint8_t mpu9250_i2c_slave1_register_get(void);
-void mpu9250_i2c_slave1_register_set(uint8_t value);
+uint8_t mpu9250_slave1_register_get(void);
+void mpu9250_slave1_register_set(uint8_t value);
 
 /**
  * Register 42 - I2C_SLV1_CTRL
@@ -771,8 +771,8 @@ void mpu9250_i2c_slave1_register_set(uint8_t value);
  * Bit [3:0]    I2C_SLV1_LENG[3:0]    Number of bytes to be read from I2C
  *                                    slave 1
  */
-uint8_t mpu9250_i2c_slave1_control_get(void);
-void mpu9250_i2c_slave1_control_set(uint8_t value);
+uint8_t mpu9250_slave1_control_get(void);
+void mpu9250_slave1_control_set(uint8_t value);
 
 /**
  * Registers 43 to 45 - I2C Slave 2 Control
@@ -787,8 +787,8 @@ void mpu9250_i2c_slave1_control_set(uint8_t value);
  *
  * Bit [6:0]    I2C_ID_2[6:0]         Physical address of I2C slave 2
  */
-uint8_t mpu9250_i2c_slave2_address_get(void);
-void mpu9250_i2c_slave2_address_set(uint8_t value);
+uint8_t mpu9250_slave2_address_get(void);
+void mpu9250_slave2_address_set(uint8_t value);
 
 /**
  * Register 44 - I2C_SLV2_REG
@@ -798,8 +798,8 @@ void mpu9250_i2c_slave2_address_set(uint8_t value);
  * Bit [7:0]    I2C_SLV2_REG[7:0]     I2C slave 2 register address from where
  *                                    to begin data transfer
  */
-uint8_t mpu9250_i2c_slave2_register_get(void);
-void mpu9250_i2c_slave2_register_set(uint8_t value);
+uint8_t mpu9250_slave2_register_get(void);
+void mpu9250_slave2_register_set(uint8_t value);
 
 /**
  * Register 45 - I2C_SLV2_CTRL
@@ -839,8 +839,8 @@ void mpu9250_i2c_slave2_register_set(uint8_t value);
  * Bit [3:0]    I2C_SLV2_LENG[3:0]    Number of bytes to be read from I2C
  *                                    slave 2
  */
-uint8_t mpu9250_i2c_slave2_control_get(void);
-void mpu9250_i2c_slave2_control_set(uint8_t value);
+uint8_t mpu9250_slave2_control_get(void);
+void mpu9250_slave2_control_set(uint8_t value);
 
 /**
  * Register 46 - I2C_SLV3_ADDR
@@ -852,8 +852,8 @@ void mpu9250_i2c_slave2_control_set(uint8_t value);
  *
  * Bit [6:0]    I2C_ID_3[6:0]         Physical address of I2C slave 3
  */
-uint8_t mpu9250_i2c_slave3_address_get(void);
-void mpu9250_i2c_slave3_address_set(uint8_t value);
+uint8_t mpu9250_slave3_address_get(void);
+void mpu9250_slave3_address_set(uint8_t value);
 
 /**
  * Register 47 - I2C_SLV3_REG
@@ -863,8 +863,8 @@ void mpu9250_i2c_slave3_address_set(uint8_t value);
  * Bit [7:0]    I2C_SLV3_REG[7:0]     I2C slave 3 register address from where
  *                                    to begin data transfer
  */
-uint8_t mpu9250_i2c_slave3_register_get(void);
-void mpu9250_i2c_slave3_register_set(uint8_t value);
+uint8_t mpu9250_slave3_register_get(void);
+void mpu9250_slave3_register_set(uint8_t value);
 
 /**
  * Register 48 - I2C_SLV3_CTRL
@@ -915,8 +915,8 @@ void mpu9250_i2c_slave3_register_set(uint8_t value);
  * Bit [3:0]    I2C_SLV3_LENG[3:0]     Number of bytes to be read from I2C
  *                                     slave 3
  */
-uint8_t mpu9250_i2c_slave3_control_get(void);
-void mpu9250_i2c_slave3_control_set(uint8_t value);
+uint8_t mpu9250_slave3_control_get(void);
+void mpu9250_slave3_control_set(uint8_t value);
 
 /**
  * Register 49 - I2C_SLV4_ADDR
@@ -928,8 +928,8 @@ void mpu9250_i2c_slave3_control_set(uint8_t value);
  *
  * Bit [6:0]    I2C_ID_4[6:0]          Physical address of I2C slave 4
  */
-uint8_t mpu9250_i2c_slave4_address_get(void);
-void mpu9250_i2c_slave4_address_set(uint8_t value);
+uint8_t mpu9250_slave4_address_get(void);
+void mpu9250_slave4_address_set(uint8_t value);
 
 /**
  * Register 50 - I2C_SLV4_REG
@@ -939,8 +939,8 @@ void mpu9250_i2c_slave4_address_set(uint8_t value);
  * Bit [7:0]    I2C_SLV4_REG[7:0]      I2C slave 4 register address from where
  *                                     to begin data transfer
  */
-uint8_t mpu9250_i2c_slave4_register_get(void);
-void mpu9250_i2c_slave4_register_set(uint8_t value);
+uint8_t mpu9250_slave4_register_get(void);
+void mpu9250_slave4_register_set(uint8_t value);
 
 /**
  * Register 51 - I2C_SLV4_DO
@@ -950,8 +950,8 @@ void mpu9250_i2c_slave4_register_set(uint8_t value);
  * Bit [7:0]    I2C_SLV4_DO[7:0]       Data to be written to I2C Slave 4 if
  *                                     enabled.
  */
-uint8_t mpu9250_i2c_slave4_data_get(void);
-void mpu9250_i2c_slave4_data_set(uint8_t value);
+uint8_t mpu9250_slave4_data_get(void);
+void mpu9250_slave4_data_set(uint8_t value);
 
 /**
  * Register 52 - I2C_SLV4_CTRL
@@ -984,8 +984,8 @@ void mpu9250_i2c_slave4_data_set(uint8_t value);
  *                                     (1+I2C_MST_DLY) samples (as determined
  *                                     by the SMPLRT_DIV and DLPF_CFG registers.
  */
-uint8_t mpu9250_i2c_slave4_control_get(void);
-void mpu9250_i2c_slave4_control_set(uint8_t value);
+uint8_t mpu9250_slave4_control_get(void);
+void mpu9250_slave4_control_set(uint8_t value);
 
 /**
  * Register 53 - I2C_SLV4_DI
@@ -994,9 +994,9 @@ void mpu9250_i2c_slave4_control_set(uint8_t value);
  *
  * Bit [7:0]    I2C_SLV4_DI[7:0]       Data read from I2C Slave 4.
  */
-uint8_t mpu9250_i2c_slave4_data_get(void);
+uint8_t mpu9250_slave4_data_get(void);
 // No setter for I2C_SLV4_DI (Read-only)
-// void mpu9250_i2c_slave4_data_set(uint8_t value);
+// void mpu9250_slave4_data_set(uint8_t value);
 
 /**
  * 4.18
@@ -1053,9 +1053,9 @@ uint8_t mpu9250_i2c_slave4_data_get(void);
  *                                     I2C_MST_INT_EN in the INT_ENABLE
  *                                     register is asserted.
  */
-uint8_t mpu9250_i2c_master_status_get(void);
+uint8_t mpu9250_master_status_get(void);
 // No setter for I2C_MST_STATUS (Read-only)
-// void mpu9250_i2c_master_status_set(uint8_t value);
+// void mpu9250_master_status_set(uint8_t value);
 
 /**
  * Register 55 - INT Pin / Bypass Enable Configuration (INT_PIN_CFG)
@@ -1123,8 +1123,8 @@ uint8_t mpu9250_i2c_master_status_get(void);
  *
  * Bit [0]     RESERVED
  */
-uint8_t mpu9250_i2c_int_pin_config_get(void);
-void mpu9250_i2c_int_pin_config_set(uint8_t value);
+uint8_t mpu9250_int_pin_config_get(void);
+void mpu9250_int_pin_config_set(uint8_t value);
 
 
 /**
@@ -1169,8 +1169,8 @@ void mpu9250_i2c_int_pin_config_set(uint8_t value);
  *
  *                                     0 - function is disabled.
  */
-uint8_t mpu9250_i2c_interrupt_enable_get(void);
-void mpu9250_i2c_interrupt_enable_set(uint8_t value);
+uint8_t mpu9250_interrupt_enable_get(void);
+void mpu9250_interrupt_enable_set(uint8_t value);
 
 /**
  * Register 58 - Interrupt Status (INT_STATUS)
@@ -1199,9 +1199,9 @@ void mpu9250_i2c_interrupt_enable_set(uint8_t value);
  *                                     the setting in register 36 I2C_MST_CTRL,
  *                                     bit [6] WAIT_FOR_ES.
  */
-uint8_t mpu9250_i2c_interrupt_status_get(void);
+uint8_t mpu9250_interrupt_status_get(void);
 // No setter for INT_STATUS (Read-only)
-// void mpu9250_i2c_interrupt_status_set(uint8_t value);
+// void mpu9250_interrupt_status_set(uint8_t value);
 
 /**
  * Register 59 to 64 - Accelerometer Measurements
@@ -1213,7 +1213,7 @@ uint8_t mpu9250_i2c_interrupt_status_get(void);
  *
  * Bit [7:0]   D[7:0]                  High byte of accelerometer x-axis data.
  */
-uint8_t mpu9250_i2c_accel_xout_h(void);
+uint8_t mpu9250_accel_xout_h(void);
 
 /**
  * Register 60 - ACCEL_XOUT_L
@@ -1222,7 +1222,7 @@ uint8_t mpu9250_i2c_accel_xout_h(void);
  *
  * Bit [7:0]   D[7:0]                  Low byte of accelerometer x-axis data.
  */
-uint8_t mpu9250_i2c_accel_xout_l(void);
+uint8_t mpu9250_accel_xout_l(void);
 
 /**
  * Register 61 - ACCEL_YOUT_H
@@ -1231,7 +1231,7 @@ uint8_t mpu9250_i2c_accel_xout_l(void);
  *
  * Bit [7:0]   D[7:0]                  High byte of accelerometer y-axis data.
  */
-uint8_t mpu9250_i2c_accel_yout_h(void);
+uint8_t mpu9250_accel_yout_h(void);
 
 /**
  * Register 62 - ACCEL_YOUT_L
@@ -1240,7 +1240,7 @@ uint8_t mpu9250_i2c_accel_yout_h(void);
  *
  * Bit [7:0]   D[7:0]                  Low byte of accelerometer y-axis data.
  */
-uint8_t mpu9250_i2c_accel_yout_l(void);
+uint8_t mpu9250_accel_yout_l(void);
 
 /**
  * Register 63 - ACCEL_ZOUT_H
@@ -1249,7 +1249,7 @@ uint8_t mpu9250_i2c_accel_yout_l(void);
  *
  * Bit [7:0]   D[7:0]                  High byte of accelerometer z-axis data.
  */
-uint8_t mpu9250_i2c_accel_zout_h(void);
+uint8_t mpu9250_accel_zout_h(void);
 
 /**
  * Register 64 - ACCEL_ZOUT_L
@@ -1258,7 +1258,7 @@ uint8_t mpu9250_i2c_accel_zout_h(void);
  *
  * Bit [7:0]   D[7:0]                  Low byte of accelerometer z-axis data.
  */
-uint8_t mpu9250_i2c_accel_zout_l(void);
+uint8_t mpu9250_accel_zout_l(void);
 
 /**
  * Register 65 and 66 - Temperature Measurement
@@ -1271,7 +1271,7 @@ uint8_t mpu9250_i2c_accel_zout_l(void);
  * Bit [7:0]   D[7:0]                  High byte of the temperature sensor
  *                                     output
  */
-uint8_t mpu9250_i2c_temp_out_h(void);
+uint8_t mpu9250_temp_out_h(void);
 /**
  * Register 66 - TEMP_OUT_L
  * Serial IF: SyncR (Read-Only)
@@ -1290,7 +1290,7 @@ uint8_t mpu9250_i2c_temp_out_h(void);
  *                                     sensor. TEMP_OUT is the actual output of
  *                                     the temperature sensor.
  */
-uint8_t mpu9250_i2c_temp_out_l(void);
+uint8_t mpu9250_temp_out_l(void);
 
 /**
  * Register 67 to 72 - Gyroscope Measurements
@@ -1302,7 +1302,7 @@ uint8_t mpu9250_i2c_temp_out_l(void);
  *
  * Bit [7:0]   D[7:0]                  High byte of the X-Axis gyroscope output
  */
-uint8_t mpu9250_i2c_gyro_xout_h(void);
+uint8_t mpu9250_gyro_xout_h(void);
 /**
  * Register 68 - GYRO_XOUT_L
  * Serial IF: SyncR (Read-Only)
@@ -1317,7 +1317,7 @@ uint8_t mpu9250_i2c_gyro_xout_h(void);
  *                                     Conditions  Gyro_Sensitivity = 131 LSB/
  *                                                                        (o/s)
  */
-uint8_t mpu9250_i2c_gyro_xout_l(void);
+uint8_t mpu9250_gyro_xout_l(void);
 
 /**
  * Register 69 - GYRO_YOUT_H
@@ -1326,7 +1326,7 @@ uint8_t mpu9250_i2c_gyro_xout_l(void);
  *
  * Bit [7:0]   D[7:0]                  High byte of the Y-Axis gyroscope output
  */
-uint8_t mpu9250_i2c_gyro_yout_h(void);
+uint8_t mpu9250_gyro_yout_h(void);
 /**
  * Register 70 - GYRO_YOUT_L
  * Serial IF: SyncR (Read-Only)
@@ -1341,7 +1341,7 @@ uint8_t mpu9250_i2c_gyro_yout_h(void);
  *                                     Conditions  Gyro_Sensitivity = 131 LSB/
  *                                                                        (o/s)
  */
-uint8_t mpu9250_i2c_gyro_yout_l(void);
+uint8_t mpu9250_gyro_yout_l(void);
 
 /**
  * Register 71 - GYRO_ZOUT_H
@@ -1350,7 +1350,7 @@ uint8_t mpu9250_i2c_gyro_yout_l(void);
  *
  * Bit [7:0]   D[7:0]                  High byte of the Z-Axis gyroscope output
  */
-uint8_t mpu9250_i2c_gyro_zout_h(void);
+uint8_t mpu9250_gyro_zout_h(void);
 /**
  * Register 72 - GYRO_ZOUT_L
  * Serial IF: SyncR (Read-Only)
@@ -1365,7 +1365,7 @@ uint8_t mpu9250_i2c_gyro_zout_h(void);
  *                                     Conditions  Gyro_Sensitivity = 131 LSB/
  *                                                                        (o/s)
  */
-uint8_t mpu9250_i2c_gyro_zout_l(void);
+uint8_t mpu9250_gyro_zout_l(void);
 
 /**
  * 4.25 Register 73 to  96 - External Sensor Data
@@ -1385,7 +1385,7 @@ uint8_t mpu9250_i2c_gyro_zout_l(void);
  *
  * (See description on page 35 of register map PDF)
  */
-uint8_t mpu9250_i2c_ext_sensor_data_get(int registerNumber);
+uint8_t mpu9250_ext_sensor_data_get(int registerNumber);
 
 /**
  * Register 99 - I2C Slave 0 Data Out (I2C_SLV0_DO)
@@ -1394,8 +1394,8 @@ uint8_t mpu9250_i2c_ext_sensor_data_get(int registerNumber);
  *
  * Bit [7:0]   I2C_SLV0_DO             Data out when slave 0 is set to write
  */
-uint8_t mpu9250_i2c_slave0_data_out_get(void);
-void mpu9250_i2c_slave0_data_out_set(uint8_t value);
+uint8_t mpu9250_slave0_data_out_get(void);
+void mpu9250_slave0_data_out_set(uint8_t value);
 
 /**
  * Register 100 - I2C Slave 1 Data Out (I2C_SLV1_DO)
@@ -1404,8 +1404,8 @@ void mpu9250_i2c_slave0_data_out_set(uint8_t value);
  *
  * Bit [7:0]   I2C_SLV1_DO             Data out when slave 1 is set to write
  */
-uint8_t mpu9250_i2c_slave1_data_out_get(void);
-void mpu9250_i2c_slave1_data_out_set(uint8_t value);
+uint8_t mpu9250_slave1_data_out_get(void);
+void mpu9250_slave1_data_out_set(uint8_t value);
 
 /**
  * Register 101 - I2C Slave 2 Data Out (I2C_SLV2_DO)
@@ -1414,8 +1414,8 @@ void mpu9250_i2c_slave1_data_out_set(uint8_t value);
  *
  * Bit [7:0]   I2C_SLV2_DO             Data out when slave 2 is set to write
  */
-uint8_t mpu9250_i2c_slave2_data_out_get(void);
-void mpu9250_i2c_slave2_data_out_set(uint8_t value);
+uint8_t mpu9250_slave2_data_out_get(void);
+void mpu9250_slave2_data_out_set(uint8_t value);
 
 /**
  * Register 102 - I2C Slave 3 Data Out (I2C_SLV3_DO)
@@ -1424,8 +1424,8 @@ void mpu9250_i2c_slave2_data_out_set(uint8_t value);
  *
  * Bit [7:0]   I2C_SLV3_DO             Data out when slave 3 is set to write
  */
-uint8_t mpu9250_i2c_slave3_data_out_get(void);
-void mpu9250_i2c_slave3_data_out_set(uint8_t value);
+uint8_t mpu9250_slave3_data_out_get(void);
+void mpu9250_slave3_data_out_set(uint8_t value);
 
 /**
  * Register 103 - I2C Master Delay Control (I2C_MST_DELAY_CTRL)
@@ -1457,8 +1457,8 @@ void mpu9250_i2c_slave3_data_out_set(uint8_t value);
  *                                     accessed 1+I2C_MST_DLY) samples as
  *                                     determined by SMPLRT_DIV and DLPF_CFG
  */
-uint8_t mpu9250_i2c_master_delay_control_get(void);
-void mpu9250_i2c_master_delay_control_set(uint8_t value);
+uint8_t mpu9250_master_delay_control_get(void);
+void mpu9250_master_delay_control_set(uint8_t value);
 
 /**
  * Register 104 - Signal Path Reset
@@ -1478,8 +1478,8 @@ void mpu9250_i2c_master_delay_control_set(uint8_t value);
  *                                     Sensor registers are not cleared. Use
  *                                     SIG_COND_RST to clear sensor registers.
  */
-uint8_t mpu9250_i2c_signal_path_reset_get(void);
-void mpu9250_i2c_signal_path_reset_set(uint8_t value);
+uint8_t mpu9250_signal_path_reset_get(void);
+void mpu9250_signal_path_reset_set(uint8_t value);
 
 /**
  * Register 105 - Accelerometer Interrupt Control (ACCEL_INTEL_CTRL)
@@ -1495,10 +1495,353 @@ void mpu9250_i2c_signal_path_reset_set(uint8_t value);
  *
  *                                        0 = Not used.
  *
- * Bit [5:0]   Reserved
+ * Bit [5:0]   RESERVED
  */
-uint8_t mpu9250_i2c_accelerometer_interrupt_control_get(void);
-void mpu9250_i2c_accelerometer_interrupt_control_set(uint8_t value);
+uint8_t mpu9250_accelerometer_interrupt_control_get(void);
+void mpu9250_accelerometer_interrupt_control_set(uint8_t value);
+
+/**
+ * Register 106 - User Control (USER_CTRL)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]     RESERVED
+ *
+ * Bit [6]     FIFO_EN                 1 - Enable FIFO operation mode.
+ *
+ *                                     0 - Disable FIFO access from serial
+ *                                     interface. To disable FIFO writes by
+ *                                     DMA, use FIFO_EN register. To disable
+ *                                     possible FIFO writes from DMP, disable
+ *                                     the DMP.
+ *
+ * Bit [5]     I2C_MST_EN              1 - Enable the I2C Master I/F module;
+ *                                     pins ES_DA and ES_SCL are isolated from
+ *                                     pins SDA/SDI and SCL/ SCLK.
+ *
+ *                                     0 - Disable I2C Master I/F module; pins
+ *                                     ES_DA and ES_SCL are logically driven by
+ *                                     pins SDA/SDI and SCL/ SCLK.
+ *
+ * Bit [4]     I2C_IF_DIS              1 - Reset I2C Slave module and put the
+ *                                     serial interface in SPI mode only. This
+ *                                     bit auto clears after one clock cycle.
+ *
+ * Bit [3]     RESERVED
+ *
+ * Bit [2]     FIFO_RST                1 - Reset FIFO module. Reset is
+ *                                     asynchronous. This bit auto clears after
+ *                                     one clock cycle.
+ *
+ * Bit [1]     I2C_MST_RST             1 - Reset I2C Master module. Reset is
+ *                                     asynchronous. This bit auto clears after
+ *                                     one clock cycle.
+ *
+ *                                     NOTE: This bit should only be set when
+ *                                     the I2C master has hung. If this bit is
+ *                                     set during an active I2C master
+ *                                     transaction, the I2C slave will hang,
+ *                                     which will require the host to reset
+ *                                     the slave.
+ *
+ * Bit [0]     SIG_COND_RST            1 - Reset all gyro digital signal path,
+ *                                     accel digital signal path, and temp
+ *                                     digital signal path. This bit also
+ *                                     clears all the sensor registers.
+ *                                     SIG_COND_RST is a pulse of one
+ *                                     clk8M wide.
+ */
+uint8_t mpu9250_user_control_get(void);
+void mpu9250_user_control_set(uint8_t value);
+
+/**
+ * Register 107 - Power Management 1 (PWR_MGMT_1)
+ * Serial IF: R/W
+ * Reset Value: (Depends on PU_SLEEP_MODE bit, see below)
+ *
+ * Bit [7]     H_RESET                 1 - Reset the internal registers and
+ *                                     restores the default settings. Write a 1
+ *                                     to set the reset, the bit will auto
+ *                                     clear.
+ *
+ * Bit [6]     SLEEP                   When set, the chip is set to sleep mode
+ *                                     (After OTP loads, the PU_SLEEP_MODE bit
+ *                                     will be written here)
+ *
+ * Bit [5]     CYCLE                   When set, and SLEEP and STANDBY are not
+ *                                     set, the chip will cycle between sleep
+ *                                     and taking a single sample at a rate
+ *                                     determined by LP_ACCEL_ODR register
+ *
+ *                                     NOTE: When all accelerometer axis are
+ *                                     disabled via PWR_MGMT_2 register bits
+ *                                     and cycle is enabled, the chip will wake
+ *                                     up at the rate determined by the
+ *                                     respective registers above, but will not
+ *                                     take any samples.
+ *
+ * Bit [4]     GYRO_STANDBY            When set, the gyro drive and pll
+ *                                     circuitry are enabled, but the sense
+ *                                     paths are disabled. This is a low power
+ *                                     mode that allows quick enabling of the
+ *                                     gyros.
+ *
+ * Bit [3]     PD_PTAT                 Power down internal PTAT voltage
+ *                                     generator and PTAT ADC
+ *
+ * Bit [2:0]   CLKSEL[2:0]             Code  |  Clock Source
+ *                                     -----------------------------------------
+ *                                     0     |  Internal 20MHz oscillator
+ *                                     ------|----------------------------------
+ *                                     1 - 5 |  Auto selects the best available
+ *                                           |  clock source – PLL if ready,
+ *                                           |  else use the Internal oscillator
+ *                                     -----------------------------------------
+ *                                     6     |  Internal 20MHz oscillator
+ *                                     -----------------------------------------
+ *                                     7     |  Stops the clock and keeps timing
+ *                                           |  generator in reset
+ *
+ *                                     (After OTP loads, the inverse of
+ *                                     PU_SLEEP_MODE bit will be written to
+ *                                     CLKSEL[0])
+ */
+uint8_t mpu9250_power_management_1_get(void);
+void mpu9250_power_management_1_set(uint8_t value);
+
+/**
+ * Register 108 - Power Management 2 (PWR_MGMT_2)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:6]   RESERVED
+ *
+ * Bit [5]     DISABLE_XA              1 - X accelerometer is disabled
+ *                                     0 - X accelerometer is on
+ *
+ * Bit [4]     DISABLE_YA              1 - Y accelerometer is disabled
+ *                                     0 - Y accelerometer is on
+ *
+ * Bit [3]     DISABLE_ZA              1 - Z accelerometer is disabled
+ *                                     0 - Z accelerometer is on
+ *
+ * Bit [2]     DISABLE_XG              1 - X gyro is disabled
+ *                                     0 - X gyro is on
+ *
+ * Bit [1]     DISABLE_YG              1 - Y gyro is disabled
+ *                                     0 - Y gyro is on
+ *
+ * Bit [0]     DISABLE_ZG              1 - Z gyro is disabled
+ *                                     0 - Z gyro is on
+ *
+ * The MPU-9250 can be put into Accelerometer Only Low Power Mode using the
+ * following steps:
+ *
+ * (i)     Set CYCLE bit to 1
+ * (ii)    Set SLEEP bit to 0
+ * (iii)   Set TEMP_DIS bit to 1
+ * (iv)    Set DIS_XG, DIS_YG, DIS_ZG bits to 1
+ *
+ * The bits mentioned in the steps (i) to (iii) can be found in Power
+ * Management 1 register (Register 107).
+ *
+ * In this mode, the device will power off all devices except for the primary
+ * IC interface, waking only the accelerometer at fixed intervals to take a
+ * single measurement.
+ */
+uint8_t mpu9250_power_management_2_get(void);
+void mpu9250_power_management_2_set(uint8_t value);
+
+/**
+ * Register 114 and 115 - FIFO Count Registers
+ */
+/**
+ * Register 114 - FIFO_COUNTH
+ * Address: 114
+ * Serial IF: Read Only
+ * Reset Value: 0x00
+ *
+ * Bit [7:5]   RESERVED
+ *
+ * Bit [4:0]   FIFO_CNT[12:8]          High Bits, count indicates the number of
+ *                                     written bytes in the FIFO.
+ *
+ *                                     Reading this byte latches the data for
+ *                                     both FIFO_COUNTH, and FIFO_COUNTL.
+ */
+uint8_t mpu9250_fifo_counth_get(void);
+// No setter for FIFO_COUNTH (Read-Only)
+// void mpu9250_fifo_counth_set(uint8_t value);
+
+/**
+ * Register 115 - FIFO_COUNTL
+ * Address: 115
+ * Serial IF: Read Only
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   FIFO_CNT[7:0]           Low Bits, count indicates the number of
+ *                                     written bytes in the FIFO. NOTE: Must
+ *                                     read FIFO_COUNTH
+ */
+uint8_t mpu9250_fifo_countl_get(void);
+// No setter for FIFO_COUNTL (Read-Only)
+// void mpu9250_fifo_countl_set(uint8_t value);
+
+/**
+ * Register 116 - FIFO Read Write (FIFO_R_W)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   D[7:0]                  Read/Write command provides Read or
+ *                                     Write operation for the FIFO.
+ *
+ * Description
+ * -----------
+ *
+ * This register is used to read and write data from the FIFO buffer.
+ *
+ * Data is written to the FIFO in order of register number (from lowest to
+ * highest). If all the FIFO enable flags (see below) are enabled and all
+ * External Sensor Data registers (Registers 73 to 96) are associated with a
+ * Slave device, the contents of registers 59 through 96 will be written in
+ * order at the Sample Rate.
+ *
+ * The contents of the sensor data registers (Registers 59 to 96) are written
+ * into the FIFO buffer when their corresponding FIFO enable flags are set to 1
+ * in FIFO_EN (Register 35). An additional flag for 2 the sensor data registers
+ * associated with I C Slave 3 can be found in I2C_MST_CTRL (Register 36).
+ *
+ * If the FIFO buffer has overflowed, the status bit FIFO_OFLOW_INT is
+ * automatically set to 1. This bit is located in INT_STATUS (Register 58).
+ * When the FIFO buffer has overflowed, the oldest data will be lost and new
+ * data will be written to the FIFO unless register 26 CONFIG, bit[6]
+ * FIFO_MODE = 1.
+ *
+ * If the FIFO buffer is empty, reading this register will return the last byte
+ * that was previously read from the FIFO until new data is available. The user
+ * should check FIFO_COUNT to ensure that the FIFO buffer is not read when
+ * empty.
+ */
+uint8_t mpu9250_fifo_read_write_get(void);
+void mpu9250_fifo_read_write_set(uint8_t value);
+
+/**
+ * Register 117 - Who Am I (WHOAMI)
+ * Serial IF: Read Only
+ * Reset Value: 0x68
+ *
+ * Bit [7:0]   WHOAMI                  Register to indicate to user which
+ *                                     device is being accessed.
+ *
+ * This register is used to verify the identity of the device. The contents of
+ * WHO_AM_I is an 8-bit device ID. The default value of the register is 0x71.
+ */
+uint8_t mpu9250_whoami_get(void);
+// No setter for WHOAMI (Read-Only)
+// void mpu9250_whoami_set(uint8_t value);
+
+/**
+ * 4.39 Registers 119, 120, 122, 123, 125, 126 Accelerometer Offset Registers
+ */
+/**
+ * For MPU-9250 Mode:
+ * ------------------
+ *
+ * Name: XA_OFFS_H
+ * Address: 119
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   XA_OFFS[14:7]           Upper bits of the X accelerometer offset
+ *                                     cancellation. +/- 16g Offset cancellation
+ *                                     in all Full Scale modes, 15 bit
+ *                                     0.98-mg steps
+ */
+uint8_t mpu9250_x_accel_offset_h_get(void);
+void mpu9250_x_accel_offset_h_set(uint8_t value);
+
+/**
+ * Name: XA_OFFS_L
+ * Address: 120
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:1]   XA_OFFS[6:0]            Lower bits of the X accelerometer offset
+ *                                     cancellation. +/- 16g Offset cancellation
+ *                                     in all Full Scale modes, 15 bit 0.98-mg
+ *                                     steps
+ *
+ * Bit [0]     RESERVED
+ */
+uint8_t mpu9250_x_accel_offset_l_get(void);
+void mpu9250_x_accel_offset_l_set(uint8_t value);
+
+/**
+ *
+ * Name: YA_OFFS_H
+ * Address: 122
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   YA_OFFS[14:7]           Upper bits of the Y accelerometer offset
+ *                                     cancellation. +/- 16g Offset cancellation
+ *                                     in all Full Scale modes, 15 bit
+ *                                     0.98-mg steps
+ */
+uint8_t mpu9250_y_accel_offset_h_get(void);
+void mpu9250_y_accel_offset_h_set(uint8_t value);
+
+/**
+ * Name: YA_OFFS_L
+ * Address: 123
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:1]   YA_OFFS[6:0]            Lower bits of the Y accelerometer offset
+ *                                     cancellation. +/- 16g Offset cancellation
+ *                                     in all Full Scale modes, 15 bit 0.98-mg
+ *                                     steps
+ *
+ * Bit [0]     RESERVED
+ */
+uint8_t mpu9250_y_accel_offset_l_get(void);
+void mpu9250_y_accel_offset_l_set(uint8_t value);
+
+/**
+ *
+ * Name: ZA_OFFS_H
+ * Address: 125
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   ZA_OFFS[14:7]           Upper bits of the Z accelerometer offset
+ *                                     cancellation. +/- 16g Offset cancellation
+ *                                     in all Full Scale modes, 15 bit
+ *                                     0.98-mg steps
+ */
+uint8_t mpu9250_z_accel_offset_h_get(void);
+void mpu9250_z_accel_offset_h_set(uint8_t value);
+
+/**
+ * Name: ZA_OFFS_L
+ * Address: 126
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:1]   ZA_OFFS[6:0]            Lower bits of the Z accelerometer offset
+ *                                     cancellation. +/- 16g Offset cancellation
+ *                                     in all Full Scale modes, 15 bit 0.98-mg
+ *                                     steps
+ *
+ * Bit [0]     RESERVED
+ */
+uint8_t mpu9250_z_accel_offset_l_get(void);
+void mpu9250_z_accel_offset_l_set(uint8_t value);
+
+/***
+ * ------------ Register Map for Magnetometer ----------------------------------
+ */
+
 
 #ifdef __cplusplus
 }
