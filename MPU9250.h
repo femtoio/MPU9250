@@ -1646,7 +1646,7 @@ void mpu9250_power_management_1_set(uint8_t value);
  * Management 1 register (Register 107).
  *
  * In this mode, the device will power off all devices except for the primary
- * IC interface, waking only the accelerometer at fixed intervals to take a
+ * I2C interface, waking only the accelerometer at fixed intervals to take a
  * single measurement.
  */
 uint8_t mpu9250_power_management_2_get(void);
@@ -1839,9 +1839,360 @@ uint8_t mpu9250_z_accel_offset_l_get(void);
 void mpu9250_z_accel_offset_l_set(uint8_t value);
 
 /***
- * ------------ Register Map for Magnetometer ----------------------------------
+ * 5 Register Map for Magnetometer
+ * The register map for the MPU-9250’s Magnetometer (AK8963) section is
+ * listed below.
+ *
+ * Name  | Address  | READ/WRITE  | Description  | Bit Width   | Explanation
+ * -----------------------------------------------------------------------------
+ * WIA   | 00H      | R           | Device ID    | 8           |
+ * -----------------------------------------------------------------------------
+ * INFO  | 01H      | R           | Information  | 8           |
+ * -----------------------------------------------------------------------------
+ * ST1   | 02H      | R           | Status 1     | 8           | Data status
+ * -----------------------------------------------------------------------------
+ * HXL   | 03H      |             |              | 8           | X-axis data
+ * ------------------             |              |-------------|
+ * HXH   | 04H      |             |              | 8           |
+ * ------------------             |              |------------------------------
+ * HYL   | 05H      | R           | Measurement  | 8           | Y-axis data
+ * ------------------             | data.        |-------------|
+ * HYH   | 06H      |             |              | 8           |
+ * ------------------             |              |------------------------------
+ * HZL   | 07H      |             |              | 8           | Z-axis data
+ * ------------------             |              |-------------|
+ * HZH   | 08H      |             |              | 8           |
+ * -----------------------------------------------------------------------------
+ * ST2   | 09H      | R           | Status 2     | 8           | Data status
+ * -----------------------------------------------------------------------------
+ * CNTL  | 0AH      | RW          | Control      | 8           |
+ * -----------------------------------------------------------------------------
+ * RSV   | 0BH      | RW          | Reserved     | 8           | DO NOT ACCESS
+ * -----------------------------------------------------------------------------
+ * ASTC  | 0CH      | RW          | Self-test    | 8           |
+ * -----------------------------------------------------------------------------
+ * TS1   | 0DH      | RW          | Test 1       | 8           | DO NOT ACCESS
+ * -----------------------------------------------------------------------------
+ * TS2   | 0EH      | RW          | Test 2       | 8           | DO NOT ACCESS
+ * -----------------------------------------------------------------------------
+ * I2CDIS| 0FH      | RW          | I2C disable  | 8           |
+ * -----------------------------------------------------------------------------
+ * ASAX  | 10H      | R           | X-axis       | 8           | Fuse ROM
+ *       |          |             | sensitivity  |             |
+ *       |          |             | adjustment   |             |
+ *       |          |             | value        |             |
+ * -----------------------------------------------------------------------------
+ * ASAY  | 11H      | R           | Y-axis       | 8           | Fuse ROM
+ *       |          |             | sensitivity  |             |
+ *       |          |             | adjustment   |             |
+ *       |          |             | value        |             |
+ * -----------------------------------------------------------------------------
+ * ASAZ  | 12H      | R           | Z-axis       | 8           | Fuse ROM
+ *       |          |             | sensitivity  |             |
+ *       |          |             | adjustment   |             |
+ *       |          |             | value        |             |
+ * -----------------------------------------------------------------------------
+ *
+ * Addresses from 00H to 0CH and from 10H to 12H are compliant with automatic
+ * increment function of serial interface respectively. Values of addresses
+ * from 10H to 12H can be read only in Fuse access mode. In other modes, read
+ * data is not correct.
+ */
+/**
+ * 5.1 Register Map Description
+ *
+ * Addr  | Reg. | D7    | D6    | D5    | D4    | D3    | D2    | D1    | D0
+ *       | Name |       |       |       |       |       |       |       |
+ * -----------------------------------------------------------------------------
+ * Read-only Register
+ * -----------------------------------------------------------------------------
+ * 00H   | WIA  | 0     | 1     | 0     | 0     | 1     | 0     | 0     | 0
+ * -----------------------------------------------------------------------------
+ * 01H   | INFO | INFO7 | INFO6 | INFO5 | INFO4 | INFO3 | INFO2 | INFO1 | INFO0
+ * -----------------------------------------------------------------------------
+ * 02H   | ST1  | 0     | 0     | 0     | 0     | 0     | 0     | DOR   | DRDY
+ * -----------------------------------------------------------------------------
+ * 03H   | HXL  | HX7   | HX6   | HX5   | HX4   | HX3   | HX2   | HX1   | HX0
+ * -----------------------------------------------------------------------------
+ * 04H   | HXH  | HX15  | HX14  | HX13  | HX12  | HX11  | HX10  | HX9   | HX8
+ * -----------------------------------------------------------------------------
+ * 05H   | HYL  | HY7   | HY6   | HY5   | HY4   | HY3   | HY2   | HY1   | HY0
+ * -----------------------------------------------------------------------------
+ * 06H   | HYH  | HY15  | HY14  | HY13  | HY12  | HY11  | HY10  | HY9   | HY8
+ * -----------------------------------------------------------------------------
+ * 07H   | HZL  | HZ7   | HZ6   | HZ5   | HZ4   | HZ3   | HZ2   | HZ1   | HZ0
+ * -----------------------------------------------------------------------------
+ * 08H   | HZH  | HZ15  | HZ14  | HZ13  | HZ12  | HZ11  | HZ10  | HZ9   | HZ8
+ * -----------------------------------------------------------------------------
+ * 09H   | ST2  | 0     | 0     | 0     | BITM  | HOFL  | 0     | 0     | 0
+ * -----------------------------------------------------------------------------
+ * Write/Read Register
+ * -----------------------------------------------------------------------------
+ * 0AH   | CNTL1| 0     | 0     | 0     | 0     | MODE3 | MODE2 | MODE1 | MODE0
+ * -----------------------------------------------------------------------------
+ * 0BH   | CNTL2| 0     | 0     | 0     | 0     | 0     | 0     | 0     | SRST
+ * -----------------------------------------------------------------------------
+ * 0CH   | ASTC | -     | SELF  | -     | -     | -     | -     | -     | -
+ * -----------------------------------------------------------------------------
+ * 0DH   | TS1  | -     | -     | -     | -     | -     | -     | -     | -
+ * -----------------------------------------------------------------------------
+ * 0EH   | TS2  | -     | -     | -     | -     | -     | -     | -     | -
+ * -----------------------------------------------------------------------------
+ * 0FH   |I2CDIS|I2CDIS7|I2CDIS6|I2CDIS5|I2CDIS4|I2CDIS3|I2CDIS2|I2CDIS1|I2CDIS0
+ * -----------------------------------------------------------------------------
+ * Read-only Register
+ * -----------------------------------------------------------------------------
+ * 10H   | ASAX | COEFX7| COEFX6| COEFX5| COEFX4| COEFX3| COEFX2| COEFX1| COEFX0
+ * -----------------------------------------------------------------------------
+ * 11H   | ASAY | COEFY7| COEFY6| COEFY5| COEFY4| COEFY3| COEFY2| COEFY1| COEFY0
+ * -----------------------------------------------------------------------------
+ * 12H   | ASAZ | COEFZ7| COEFZ6| COEFZ5| COEFZ4| COEFZ3| COEFZ2| COEFZ1| COEFZ0
+ *
+ *
+ * Table 3 Register Map
+ *
+ * Note: When VDD is turned ON, POR function works and all registers of AK893
+ * are initialized. TS1 and TS2 are test registers for shipment test. Do not
+ * use these registers. RSV is reserved register. Do not use this register.
+ *
+ * (See page 48 of register map PDF)
+ */
+/**
+ * Device ID of AKM. It is described in one byte and fixed value.
+ */
+uint8_t mpu9250_magnetometer_wia_device_id_get(void);
+// No setter for WIA: Device ID (Read-Only)
+/**
+ * INFO[7:0]: Device information for AKM.
+ */
+uint8_t mpu9250_magnetometer_information_get(void);
+// No setter for INFO: Information (Read-Only)
+/**
+ * DRDY: Data Ready
+ *   0 - Normal
+ *   1 - Data is ready
+ *
+ *   DRDY bit turns to "1" when data is ready in single measurement mode or
+ *   self-test mode. It returns to "0" when any one of ST2 register or
+ *   measurement data register (HXL to HZH) is read.
+ *
+ * DOR: Data Overrun
+ *   0 - Normal
+ *   1 - Data overrun
+ *
+ *   DOR bit turns to "1" when data has been skipped in continuous measurement
+ *   mode or external trigger measurement mode. It returns to "0" when any one
+ *   of ST2 register or measurement data register (HXL~HZH) is read.
+ */
+uint8_t mpu9250_magnetometer_status_1(void);
+// No setter for ST1: Status 1
+
+/**
+ * 5.6 HXL to HZH: Measurement Data
+ *
+ * Addr  | Reg. Name  | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read-only register
+ * -----------------------------------------------------------------------------
+ * 03H   | HXL        | HX7  | HX6  | HX5  | HX4  | HX3  | HX2  | HX1  | HX0
+ * -----------------------------------------------------------------------------
+ * 04H   | HXH        | HX15 | HX14 | HX13 | HX12 | HX11 | HX10 | HX9  | HX8
+ * -----------------------------------------------------------------------------
+ * 05H   | HYL        | HY7  | HY6  | HY5  | HY4  | HY3  | HY2  | HY1  | HY0
+ * -----------------------------------------------------------------------------
+ * 06H   | HYH        | HY15 | HY14 | HY13 | HY12 | HY11 | HY10 | HY9  | HY8
+ * -----------------------------------------------------------------------------
+ * 07H   | HZL        | HZ7  | HZ6  | HZ5  | HZ4  | HZ3  | HZ2  | HZ1  | HZ0
+ * -----------------------------------------------------------------------------
+ * 08H   | HZH        | HZ15 | HZ14 | HZ13 | HZ12 | HZ11 | HZ10 | HZ9  | HZ8
+ * -----------------------------------------------------------------------------
+ *         Reset      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *
+ * Measurement data of magnetic sensor X-axis/Y-axis/Z-axis
+ *   HXL[7:0]: X-axis measurement data lower 8bit
+ *   HXH[15:8]: X-axis measurement data higher 8bit
+ *   HYL[7:0]: Y-axis measurement data lower 8bit
+ *   HYH[15:8]: Y-axis measurement data higher 8bit
+ *   HZL[7:0]: Z-axis measurement data lower 8bit
+ *   HZH[15:8]: Z-axis measurement data higher 8bit
+ *
+ * Measurement data is stored in two's complement and Little Endian format.
+ * Measurement range of each axis is from -32760 ~ 32760 decimal in 16-bit
+ * output.
+ *
+ * -----------------------------------------------------------------------------
+ * Measurement data (each axis) [15:0]                       | Magnetic Flux
+ * ----------------------------------------------------------| density [μT]
+ * Two's complement    | Hex      | Decimal                  |
+ * -----------------------------------------------------------------------------
+ * 0111 1111 1111 1000 | 7FF8     | 32760                    | 4912 (max.)
+ * -----------------------------------------------------------------------------
+ *          |          |   |      |    |                     |  |
+ * -----------------------------------------------------------------------------
+ * 0000 0000 0000 0001 | 0001     | 1                        | 0.15
+ * -----------------------------------------------------------------------------
+ * 0000 0000 0000 0000 | 0000     | 0                        | 0
+ * -----------------------------------------------------------------------------
+ * 1111 1111 1111 1111 | FFFF     | -1                       | -0.15
+ * -----------------------------------------------------------------------------
+ *          |          |   |      |    |                     |   |
+ * -----------------------------------------------------------------------------
+ * 1000 0000 0000 1000 | 8008     | -32760                   | -4912 (min.)
+ * -----------------------------------------------------------------------------
+ *                       Table 4 Measurement data format
+ */
+uint8_t mpu9250_magnetometer_measurement_data_hxl_get(void);
+uint8_t mpu9250_magnetometer_measurement_data_hxh_get(void);
+uint8_t mpu9250_magnetometer_measurement_data_hyl_get(void);
+uint8_t mpu9250_magnetometer_measurement_data_hyh_get(void);
+uint8_t mpu9250_magnetometer_measurement_data_hzl_get(void);
+uint8_t mpu9250_magnetometer_measurement_data_hzh_get(void);
+
+/**
+ * ST2: Status 2
+ *
+ * -----------------------------------------------------------------------------
+ * Addr  | Reg. Name  | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read-only register
+ * -----------------------------------------------------------------------------
+ * 09H   | ST2        | 0    | 0    | 0    | BITM | HOFL | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *         Reset      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *
+ * HOFL: Magnetic sensor overflow
+ *   0 - Normal
+ *   1 - Magnetic sensor overflow occurred
+ *
+ *   In single measurement mode, continuous measurement mode, external trigger
+ *   measurement mode and self-test mode, magnetic sensor may overflow even
+ *   though measurement data register is not saturated. In this case,
+ *   measurement data is not correct and HOFL bit turns to "1". When next
+ *   measurement stars, it returns to "0".
+ *
+ * BITM: Output bit setting (mirror)
+ *   0 - 14-bit output
+ *   1 - 16-bit output
+ *
+ *   Mirror data of BIT bit of CNTL1 register. ST2 register has a role as data
+ *   reading end register, also. When any of measurement data register is read
+ *   in continuous measurement mode or external trigger measurement mode, it
+ *   means data reading start and taken as data reading until ST2 register is
+ *   read. Therefore, when any of measurement data is read, be sure to read
+ *   ST2 register at the end.
+ */
+uint8_t mpu9250_magnetometer_status_2_get(void);
+
+/**
+ * 5.8 CNTL1: Control 1
+ *
+ * -----------------------------------------------------------------------------
+ * Addr  | Reg. Name  | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read-only register
+ * -----------------------------------------------------------------------------
+ * 0AH   | CNTL1      | 0    | 0    | 0    | BIT  | MODE3| MODE2| MODE1| MODE0
+ * -----------------------------------------------------------------------------
+ *         Reset      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *
+ * MODE[3:0]: Operation mode setting
+ *
+ *   "0000": Power-down mode
+ *   "0001": Single measurement mode
+ *   "0010": Continuous measurement mode 1
+ *   "0110": Continuous measurement mode 2
+ *   "0100": External trigger measurement mode
+ *   "1000": Self-test mode
+ *   "1111": Fuse ROM access mode
+ *
+ *   Other code settings are prohibited
+ *
+ * BIT: Output bit setting
+ *   0 - 14-bit output
+ *   1 - 16-bit output
+ *
+ * When each mode is set, AK8963 transits to set mode.
+ * When CNTL register is accessed to be written, registers from 02H to 09H
+ * are initialized.
+ */
+uint8_t mpu9250_magnetometer_control_1_get(void);
+
+/**
+ * 5.9 CNTL2: Control 2
+ *
+ * -----------------------------------------------------------------------------
+ * Addr  | Reg. Name  | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read-only register
+ * -----------------------------------------------------------------------------
+ * 0BH   | CNTL2      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | SRST
+ * -----------------------------------------------------------------------------
+ *         Reset      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *
+ * SRST: Soft reset
+ *   0 - Normal
+ *   1 - Reset
+ *
+ * When "1" is set, all registers are initialized. After reset, SRST bit turns to "0" automatically.
+ */
+uint8_t mpu9250_magnetometer_control_2_get(void);
+
+/**
+ * 5.10 ASTC: Self-Test Control
+ *
+ * -----------------------------------------------------------------------------
+ * Addr  | Reg. Name  | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read/Write register
+ * -----------------------------------------------------------------------------
+ * 0CH   | ASTC       | -    | SELF | -    | -    | -    | -    | -    | -
+ * -----------------------------------------------------------------------------
+ *         Reset      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *
+ * SELF: Self-test control
+ *   0 - Normal
+ *   1 - Generate magnetic field for self-test
+ *
+ * Do not write "1" to any bit other than SELF bit in ASTC register. If "1" is
+ * written to any bit other than SELF bit, normal measurement cannot be done.
+ */
+uint8_t mpu9250_magnetometer_self_test_get(void);
+void mpu9250_magnetometer_self_test_set(uint8_t value);
+
+/**
+ * 5.11 TS1, TS2: Test 1, 2
+ *  (See page 52)
+ * TS1 and TS2 registers are test registers for shipment test. Do not use these registers.
  */
 
+/**
+ * 5.12 I2CDIS: I2C Disable
+ *
+ * -----------------------------------------------------------------------------
+ * Addr  | Reg. Name | D7    | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read/Write register
+ * -----------------------------------------------------------------------------
+ * 0FH   | I2CDIS     | DIS7 | DIS6 | DIS5 | DIS4 | DIS3 | DIS2 | DIS1 | DIS0
+ * -----------------------------------------------------------------------------
+ *         Reset      | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0
+ * -----------------------------------------------------------------------------
+ *
+ * This register disables I2C bus interface. I2C bus interface is enabled in
+ * default. To disable I2C bus  interface, write "00011011" to I2CDIS register.
+ * Then I2C bus interface is disabled.
+ *
+ * Once I2C bus interface is disabled, it is impossible to write other value to
+ * I2CDIS register. To enable I2Cbus interface, reset AK8963 or input start
+ * condition 8 times continuously.
+ */
+uint8_t mpu9250_magnetometer_i2c_disable_get(void);
+void mpu9250_magnetometer_i2c_disable_set(uint8_t value);
 
 #ifdef __cplusplus
 }
