@@ -96,6 +96,9 @@
 
 #define MPU9250_INT_PIN_CFG                      0x37
 #define MPU9250_INT_ENABLE                       0x38
+
+#define MPU9250_DMP_INT_STATUS                   0x39 // Check DMP Interrupt, see 0x6d
+
 #define MPU9250_INT_STATUS                       0x3a
 
 // Accel XOUT
@@ -160,11 +163,22 @@
 #define MPU9250_MOT_DETECT_CTRL                  0x69
 
 // User
-#define MPU9250_USER_CTRL                        0x6a
+#define MPU9250_USER_CTRL                        0x6a // Bit 7 enable DMP, bit 3 reset DMP. See 0x6d
 
 // Power management
 #define MPU9250_PWR_MGMT_1                       0x6b
 #define MPU9250_PWR_MGMT_2                       0x6c
+
+// ...Looked for notes on DMP features, but Invensense docs were lacking.
+// Found kriswiner's Arduino sketch for Basic AHRS, and found values/notes for
+// Digital Motion Processing registers.
+//
+// See https://github.com/kriswiner/MPU-9250/blob/master/MPU9250BasicAHRS.ino
+#define MPU9250_DMP_BANK                         0x6d
+#define MPU9250_DMP_RW_PNT                       0x6e
+#define MPU9250_DMP_REG                          0x6f
+#define MPU9250_DMP_REG_1                        0x70
+#define MPU9250_DMP_REG_2                        0x71
 
 // FIFO Count
 #define MPU9250_FIFO_COUNTH                      0x72

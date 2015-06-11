@@ -950,8 +950,8 @@ void mpu9250_slave4_register_set(uint8_t value);
  * Bit [7:0]    I2C_SLV4_DO[7:0]       Data to be written to I2C Slave 4 if
  *                                     enabled.
  */
-uint8_t mpu9250_slave4_data_get(void);
-void mpu9250_slave4_data_set(uint8_t value);
+uint8_t mpu9250_slave4_data_output_get(void);
+void mpu9250_slave4_data_output_set(uint8_t value);
 
 /**
  * Register 52 - I2C_SLV4_CTRL
@@ -994,9 +994,9 @@ void mpu9250_slave4_control_set(uint8_t value);
  *
  * Bit [7:0]    I2C_SLV4_DI[7:0]       Data read from I2C Slave 4.
  */
-uint8_t mpu9250_slave4_data_get(void);
+uint8_t mpu9250_slave4_data_input_get(void);
 // No setter for I2C_SLV4_DI (Read-only)
-// void mpu9250_slave4_data_set(uint8_t value);
+// void mpu9250_slave4_data_input_set(uint8_t value);
 
 /**
  * 4.18
@@ -1505,7 +1505,7 @@ void mpu9250_accelerometer_interrupt_control_set(uint8_t value);
  * Serial IF: R/W
  * Reset Value: 0x00
  *
- * Bit [7]     RESERVED
+ * Bit [7]     RESERVED                (See notes below regarding DMP)
  *
  * Bit [6]     FIFO_EN                 1 - Enable FIFO operation mode.
  *
@@ -1527,7 +1527,7 @@ void mpu9250_accelerometer_interrupt_control_set(uint8_t value);
  *                                     serial interface in SPI mode only. This
  *                                     bit auto clears after one clock cycle.
  *
- * Bit [3]     RESERVED
+ * Bit [3]     RESERVED                (See notes below regarding DMP)
  *
  * Bit [2]     FIFO_RST                1 - Reset FIFO module. Reset is
  *                                     asynchronous. This bit auto clears after
@@ -1550,6 +1550,9 @@ void mpu9250_accelerometer_interrupt_control_set(uint8_t value);
  *                                     clears all the sensor registers.
  *                                     SIG_COND_RST is a pulse of one
  *                                     clk8M wide.
+ *
+ * DMP Notes: Bit 7 enable DMP, bit 3 reset DMP
+ * (See https://github.com/kriswiner/MPU-9250/blob/master/MPU9250BasicAHRS.ino)
  */
 uint8_t mpu9250_user_control_get(void);
 void mpu9250_user_control_set(uint8_t value);
@@ -2174,7 +2177,7 @@ void mpu9250_magnetometer_self_test_set(uint8_t value);
  * 5.12 I2CDIS: I2C Disable
  *
  * -----------------------------------------------------------------------------
- * Addr  | Reg. Name | D7    | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * Addr  | Reg. Name  | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
  * -----------------------------------------------------------------------------
  *                             Read/Write register
  * -----------------------------------------------------------------------------
@@ -2193,6 +2196,48 @@ void mpu9250_magnetometer_self_test_set(uint8_t value);
  */
 uint8_t mpu9250_magnetometer_i2c_disable_get(void);
 void mpu9250_magnetometer_i2c_disable_set(uint8_t value);
+
+/**
+ * 5.13 ASAX, ASAY, ASAZ: Sensitivity Adjustment values
+ *
+ * -----------------------------------------------------------------------------
+ * Addr  | Reg. Nm | D7   | D6   | D5   | D4   | D3   | D2   | D1   | D0
+ * -----------------------------------------------------------------------------
+ *                             Read/Write register
+ * -----------------------------------------------------------------------------
+ * 10H   | ASAX    |COEFX7|COEFX6|COEFX5|COEFX4|COEFX3|COEFX2|COEFX1|COEFX0
+ * -----------------------------------------------------------------------------
+ * 11H   | ASAY    |COEFY7|COEFY6|COEFY5|COEFY4|COEFY3|COEFY2|COEFY1|COEFY0
+ * -----------------------------------------------------------------------------
+ * 12H   | ASAZ    |COEFZ7|COEFZ6|COEFZ5|COEFZ4|COEFZ3|COEFZ2|COEFZ1|COEFZ0
+ * -----------------------------------------------------------------------------
+ *         Reset   | -    | -    | -    | -    | -    | -    | -    | -
+ * -----------------------------------------------------------------------------
+ *
+ * Sensitivity adjustment data for each axis is stored to fuse ROM on shipment.
+ *
+ *   ASAX[7:0]: Magnetic sensor X-axis sensitivity adjustment value
+ *   ASAY[7:0]: Magnetic sensor Y-axis sensitivity adjustment value
+ *   ASAZ[7:0]: Magnetic sensor Z-axis sensitivity adjustment value
+ *
+ * The sensitivity adjustment is done by the equation below:
+ *
+ *   Hadj = H x ((ASA - 128) x 0.5 / 128 + 1)
+ *
+ * where H is the measurement data read out from the measurement data register,
+ * ASA is the sensitivity adjustment value, and Hadj is the adjusted measurement data.
+ */
+uint8_t mpu9250_magnetometer_sensitivity_adjustment_x_get(void);
+void mpu9250_magnetometer_sensitivity_adjustment_x_set(uint8_t value);
+uint8_t mpu9250_magnetometer_sensitivity_adjustment_y_get(void);
+void mpu9250_magnetometer_sensitivity_adjustment_y_set(uint8_t value);
+uint8_t mpu9250_magnetometer_sensitivity_adjustment_z_get(void);
+void mpu9250_magnetometer_sensitivity_adjustment_z_set(uint8_t value);
+
+
+/**
+ * 6. Advanced Hardware Features
+ */
 
 #ifdef __cplusplus
 }
