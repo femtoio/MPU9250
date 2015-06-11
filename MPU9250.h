@@ -1984,7 +1984,7 @@ uint8_t mpu9250_magnetometer_information_get(void);
  *   mode or external trigger measurement mode. It returns to "0" when any one
  *   of ST2 register or measurement data register (HXL~HZH) is read.
  */
-uint8_t mpu9250_magnetometer_status_1(void);
+uint8_t mpu9250_magnetometer_status_1_get(void);
 // No setter for ST1: Status 1
 
 /**
