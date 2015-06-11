@@ -1367,6 +1367,138 @@ uint8_t mpu9250_i2c_gyro_zout_h(void);
  */
 uint8_t mpu9250_i2c_gyro_zout_l(void);
 
+/**
+ * 4.25 Register 73 to  96 - External Sensor Data
+ */
+/**
+ * Register 73 - EXT_SENS_DATA_00 - 23
+ * Serial IF: SyncR
+ * Reset Value: 0x00
+ *
+ * 24 registers with the same description as below:
+ *
+ * Bit [7:0]   D[7:0]                  Sensor data read from external I2C
+ *                                     devices via the I2C master interface.
+ *                                     The data stored is controlled by the
+ *                                     I2C_SLV(0-4)_ADDR, I2C_SLV(0-4)_REG,
+ *                                     and I2C_SLV(0-4)_CTRL registers
+ *
+ * (See description on page 35 of register map PDF)
+ */
+uint8_t mpu9250_i2c_ext_sensor_data_get(int registerNumber);
+
+/**
+ * Register 99 - I2C Slave 0 Data Out (I2C_SLV0_DO)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   I2C_SLV0_DO             Data out when slave 0 is set to write
+ */
+uint8_t mpu9250_i2c_slave0_data_out_get(void);
+void mpu9250_i2c_slave0_data_out_set(uint8_t value);
+
+/**
+ * Register 100 - I2C Slave 1 Data Out (I2C_SLV1_DO)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   I2C_SLV1_DO             Data out when slave 1 is set to write
+ */
+uint8_t mpu9250_i2c_slave1_data_out_get(void);
+void mpu9250_i2c_slave1_data_out_set(uint8_t value);
+
+/**
+ * Register 101 - I2C Slave 2 Data Out (I2C_SLV2_DO)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   I2C_SLV2_DO             Data out when slave 2 is set to write
+ */
+uint8_t mpu9250_i2c_slave2_data_out_get(void);
+void mpu9250_i2c_slave2_data_out_set(uint8_t value);
+
+/**
+ * Register 102 - I2C Slave 3 Data Out (I2C_SLV3_DO)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:0]   I2C_SLV3_DO             Data out when slave 3 is set to write
+ */
+uint8_t mpu9250_i2c_slave3_data_out_get(void);
+void mpu9250_i2c_slave3_data_out_set(uint8_t value);
+
+/**
+ * Register 103 - I2C Master Delay Control (I2C_MST_DELAY_CTRL)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]     DELAY_ES_SHADOW         Delays shadowing of external sensor data
+ *                                     until all data is received
+ *
+ * Bit [6:5]   RESERVED
+ *
+ * Bit [4]     I2C_SLV4_DLY_EN         When enabled, slave 4 will only be
+ *                                     accessed (1+I2C_MST_DLY) samples as
+ *                                     determined by SMPLRT_DIV and DLPF_CFG
+ *
+ * Bit [3]     I2C_SLV3_DLY_EN         When enabled, slave 3 will only be
+ *                                     accessed (1+I2C_MST_DLY) samples as
+ *                                     determined by SMPLRT_DIV and DLPF_CFG
+ *
+ * Bit [2]     I2C_SLV2_DLY_EN         When enabled, slave 2 will only be
+ *                                     accessed 1+I2C_MST_DLY) samples as
+ *                                     determined by SMPLRT_DIV and DLPF_CFG
+ *
+ * Bit [1]     I2C_SLV1_DLY_EN         When enabled, slave 1 will only be
+ *                                     accessed 1+I2C_MST_DLY) samples as
+ *                                     determined by SMPLRT_DIV and DLPF_CFG
+ *
+ * Bit [0]     I2C_SLV0_DLY_EN         When enabled, slave 0 will only be
+ *                                     accessed 1+I2C_MST_DLY) samples as
+ *                                     determined by SMPLRT_DIV and DLPF_CFG
+ */
+uint8_t mpu9250_i2c_master_delay_control_get(void);
+void mpu9250_i2c_master_delay_control_set(uint8_t value);
+
+/**
+ * Register 104 - Signal Path Reset
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7:3]   RESERVED
+ * Bit [2]     GYRO_RST                Reset gyro digital signal path. Note:
+ *                                     Sensor registers are not cleared. Use
+ *                                     SIG_COND_RST to clear sensor registers.
+ *
+ * Bit [1]     ACCEL_RST               Reset accel digital signal path. Note:
+ *                                     Sensor registers are not cleared. Use
+ *                                     SIG_COND_RST to clear sensor registers.
+ *
+ * Bit [0]     TEMP_RST                Reset temp digital signal path. Note:
+ *                                     Sensor registers are not cleared. Use
+ *                                     SIG_COND_RST to clear sensor registers.
+ */
+uint8_t mpu9250_i2c_signal_path_reset_get(void);
+void mpu9250_i2c_signal_path_reset_set(uint8_t value);
+
+/**
+ * Register 105 - Accelerometer Interrupt Control (ACCEL_INTEL_CTRL)
+ * Serial IF: R/W
+ * Reset Value: 0x00
+ *
+ * Bit [7]     ACCEL_INTEL_EN          This bit enables the Wake-on-Motion
+ *                                     detection logic.
+ *
+ * Bit [6]     ACCEL_INTEL_MODE        This bit defines:
+ *                                        1 = Compare the current sample with
+ *                                        the previous sample.
+ *
+ *                                        0 = Not used.
+ *
+ * Bit [5:0]   Reserved
+ */
+uint8_t mpu9250_i2c_accelerometer_interrupt_control_get(void);
+void mpu9250_i2c_accelerometer_interrupt_control_set(uint8_t value);
 
 #ifdef __cplusplus
 }
