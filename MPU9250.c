@@ -366,7 +366,9 @@ uint8_t mpu9250_gyro_zout_l() {
     return 0; //@TODO Implement this.
 }
 
-uint8_t mpu9250_ext_sensor_data_get(int registerNumber);
+uint8_t mpu9250_ext_sensor_data_get(int registerNumber) {
+    return 0; //@TODO Implement this.
+}
 
 uint8_t mpu9250_slave0_data_out_get() {
     return 0; //@TODO Implement this.
